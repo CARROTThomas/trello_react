@@ -5,6 +5,11 @@ export function NavBar() {
 
     const [state, setState] = useState(false)
 
+    function logout() {
+        localStorage.removeItem("bearerToken");
+        window.location.reload();
+    }
+
     function readLocalStorage() {
         if (GlobalConstant.isLogged) {
             setState(true)
@@ -18,9 +23,9 @@ export function NavBar() {
     return (
         <>
             <header>
-                <nav className="navbar navbar-expand-lg">
+                <nav className="navbar navbar-expand-lg bg-dark">
                     <div className="container-lg d-flex align-items-center justify-content-between">
-                        <a className="nav-link" id="logoNavBarre" href="/">LOGO</a>
+                        <a className="nav-link text-light" id="logoNavBarre" href="/">LOGO</a>
                         <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
                                 aria-label="Toggle navigation">
@@ -30,14 +35,14 @@ export function NavBar() {
                             <ul className="navbar-nav">
                                 {state ?
                                     <li>
-                                        <a className="nav-link" href="/logout">logout</a>
+                                        <button onClick={logout} className="nav-link text-light">logout</button>
                                     </li> :
                                     <>
                                         <li>
-                                            <a className="nav-link" href="/register">Register</a>
+                                            <a className="nav-link text-light" href="/register">Register</a>
                                         </li>
                                         <li>
-                                            <a className="nav-link" href="/login">Login</a>
+                                            <a className="nav-link text-light" href="/login">Login</a>
                                         </li>
                                     </>
                                 }

@@ -6,12 +6,15 @@ import {NavBar} from "./NavBar.tsx";
 import {BrowserRouter} from "react-router-dom";
 import {Router} from "./Router.tsx";
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+ReactDOM.createRoot(document.getElementById('content')!).render(
   <React.StrictMode>
       <NavBar />
 
-      <BrowserRouter>
-          <Router />
-      </BrowserRouter>
+      <div className="mt-5">
+          <BrowserRouter>
+              <Router />
+          </BrowserRouter>
+      </div>
+
   </React.StrictMode>,
 )

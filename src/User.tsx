@@ -14,10 +14,6 @@ export function User() {
         return uri.includes("/register");
     }
 
-    function isLoggged() {
-        return !!localStorage.getItem("bearerToken");
-    }
-
     function register() {
         const user = {username,password};
         axios.post(GlobalConstant.baseurl+"register",user)
@@ -40,49 +36,39 @@ export function User() {
             })
     }
 
-    function logout() {
-        localStorage.removeItem("bearerToken");
-        window.location.reload();
-    }
-
 
     return (
         <>
             <div className="container">
                 <div className="d-flex flex-column gap-3 align-items-center">
-                    {isLoggged() ?
-                        <div>
-                            <button onClick={logout} className="btn btn-primary">Logout</button>
-                        </div> :
-                        <div className="d-flex flex-column gap-3 align-items-center w-100">
-                            {checkUri() ?
-                                <h1>Register</h1> :
-                                <h1>Login</h1>
-                            }
+                    <div className="d-flex flex-column gap-3 align-items-center w-100">
+                        {checkUri() ?
+                            <h1>Register</h1> :
+                            <h1>Login</h1>
+                        }
 
-                            <div className="col-8">
-                                <div className="d-flex flex-column justify-content-center gap-2 w-100">
-                                    <input type="text"
-                                           placeholder="username"
-                                           onChange={(e) => setUsername(e.target.value)}
-                                           className="form-control"/>
+                        <div className="col-8">
+                            <div className="d-flex flex-column justify-content-center gap-2 w-100">
+                                <input type="text"
+                                       placeholder="username"
+                                       onChange={(e) => setUsername(e.target.value)}
+                                       className="form-control"/>
 
-                                    <input type="password" placeholder="password" className="form-control"
-                                           onChange={(e) => setPassword(e.target.value)}/>
-                                </div>
-
+                                <input type="password" placeholder="password" className="form-control"
+                                       onChange={(e) => setPassword(e.target.value)}/>
                             </div>
 
-                            {checkUri() ?
-                                <div>
-                                    <button onClick={register} className="btn btn-primary">Register</button>
-                                </div> :
-                                <div>
-                                    <button onClick={login} className="btn btn-primary">Login</button>
-                                </div>
-                            }
                         </div>
-                    }
+
+                        {checkUri() ?
+                            <div>
+                                <button onClick={register} className="btn btn-primary">Register</button>
+                            </div> :
+                            <div>
+                                <button onClick={login} className="btn btn-primary">Login</button>
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
         </>
