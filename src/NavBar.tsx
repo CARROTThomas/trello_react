@@ -1,5 +1,20 @@
+import {GlobalConstant} from "./Common/global-constant.ts";
+import {useEffect, useState} from "react";
 
 export function NavBar() {
+
+    const [state, setState] = useState(false)
+
+    function readLocalStorage() {
+        if (GlobalConstant.isLogged) {
+            setState(true)
+        }
+    }
+
+    useEffect(() => {
+        return readLocalStorage
+    }, []);
+
     return (
         <>
             <header>
@@ -13,12 +28,19 @@ export function NavBar() {
                         </button>
                         <div className="collapse navbar-collapse justify-content-end text-light" id="navbarNav">
                             <ul className="navbar-nav">
-                                <li>
-                                    <a className="nav-link" href="/register">Register</a>
-                                </li>
-                                <li>
-                                    <a className="nav-link" href="/login">Login</a>
-                                </li>
+                                {state ?
+                                    <li>
+                                        <a className="nav-link" href="/logout">logout</a>
+                                    </li> :
+                                    <>
+                                        <li>
+                                            <a className="nav-link" href="/register">Register</a>
+                                        </li>
+                                        <li>
+                                            <a className="nav-link" href="/login">Login</a>
+                                        </li>
+                                    </>
+                                }
                             </ul>
                         </div>
                     </div>

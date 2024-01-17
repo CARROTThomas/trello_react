@@ -9,6 +9,7 @@ export const Router = () =>{
             <Route path="/" element={<App />} />
             <Route path="register" element={<User />} />
             <Route path="login" element={<User />} />
+            <Route path="logout" element={<User />} />
         </Routes>
         </>
     )

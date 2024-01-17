@@ -1,20 +1,20 @@
 import {useState} from "react";
 import axios from 'axios';
 import {GlobalConstant} from "./Common/global-constant.ts";
+import {useNavigate} from "react-router-dom";
 
 export function User() {
-
-    //const baseUrl = "https://trello.dlfcaroline.online/api/";
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const uri = window.location.pathname;
+    const navigate = useNavigate()
 
     function checkUri(){
         return uri.includes("/register");
     }
 
-    function isLog() {
+    function isLoggged() {
         return !!localStorage.getItem("bearerToken");
     }
 
@@ -24,6 +24,7 @@ export function User() {
             .then((response)=>{
                 console.log(response.data["message"])
             })
+        return navigate("/login")
     }
 
     async function login() {
@@ -32,6 +33,10 @@ export function User() {
             .then((response)=>{
                 console.log(response.data)
                 localStorage.setItem("bearerToken",response.data["access"])
+                setTimeout(()=>{
+                    navigate("/")
+                    window.location.reload()
+                },500)
             })
     }
 
@@ -45,7 +50,7 @@ export function User() {
         <>
             <div className="container">
                 <div className="d-flex flex-column gap-3 align-items-center">
-                    {isLog() ?
+                    {isLoggged() ?
                         <div>
                             <button onClick={logout} className="btn btn-primary">Logout</button>
                         </div> :
