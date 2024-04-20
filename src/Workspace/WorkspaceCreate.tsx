@@ -1,24 +1,24 @@
 import {useState} from "react";
-import {useNavigate, useParams} from "react-router-dom";
-import axiosInstance from "./auth/interceptor.ts";
-import {GlobalConstant} from "./Common/global-constant.ts";
+import axiosInstance from "../auth/interceptor.ts";
+import {GlobalConstant} from "../Common/global-constant.ts";
+import {useNavigate} from "react-router-dom";
 
-export function WorkspaceEdit() {
-
-    const navigate = useNavigate()
+export function WorkspaceCreate() {
 
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [type, setType] = useState('');
+    const navigate = useNavigate()
 
-    const {id} = useParams();
 
-
-    async function edit() {
+    async function create() {
         const workspace = {name, description, type};
 
-        await axiosInstance.put(GlobalConstant.baseurl+`workspace/edit/${id}`, workspace)
-            .then((response) => {console.log(response.data);navigate("/myboard")})
+        await axiosInstance.post(GlobalConstant.baseurl+'/workspace/create', workspace)
+            .then((response) => {
+                console.log(response.data);
+                navigate("/myboard")
+            })
     }
 
 
@@ -31,7 +31,7 @@ export function WorkspaceEdit() {
                     </div>
 
                     <div className="mt-5 d-flex flex-column align-items-center">
-                        <div className=""><h1 className="text-light">Edit Workspace</h1></div>
+                        <div className=""><h1 className="text-light">Create Workspace</h1></div>
                     </div>
                     <hr/>
 
@@ -52,23 +52,20 @@ export function WorkspaceEdit() {
                         <div className="d-flex gap-5">
                             <div className="form-check">
                                 <label htmlFor="">Public</label>
-                                <input className="form-check-input" value="1" type="radio" name={"type"} id="" checked
-                                       onChange={(e) => setType(e.target.value)}/>
+                                <input className="form-check-input" value="1" type="radio" name={"type"} id="" checked onChange={(e) => setType(e.target.value)}/>
                             </div>
                             <div className="form-check">
                                 <label htmlFor="">Private</label>
-                                <input className="form-check-input" value="2" type="radio" name={"type"} id=""
-                                       onChange={(e) => setType(e.target.value)}/>
+                                <input className="form-check-input" value="2" type="radio" name={"type"} id="" onChange={(e) => setType(e.target.value)}/>
                             </div>
                             <div className="form-check">
                                 <label htmlFor="">Team</label>
-                                <input className="form-check-input" value="3" type="radio" name={"type"} id=""
-                                       onChange={(e) => setType(e.target.value)}/>
+                                <input className="form-check-input" value="3" type="radio" name={"type"} id="" onChange={(e) => setType(e.target.value)}/>
                             </div>
                         </div>
 
                         <div className="">
-                            <button className="btn btn-success" onClick={edit}>Edit</button>
+                            <button className="btn btn-primary" onClick={create}>Create</button>
                         </div>
                     </div>
                 </div>

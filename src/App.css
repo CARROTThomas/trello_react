@@ -33,10 +33,28 @@
   }
 }
 
+ul, li, a {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-decoration: none;
+}
+
 .card {
   padding: 2em;
 }
 
 .read-the-docs {
   color: #888;
+}
+
+.sepa_line {
+  height: 100%;
+  border-right: 1px solid #3b3b3b;
+}
+
+.card_projet {
+  margin: 0;
+  padding: 1em;
+  background-color: white;
 }

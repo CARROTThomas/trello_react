@@ -1,23 +1,28 @@
 import {useState} from "react";
-import axiosInstance from "./auth/interceptor.ts";
-import {GlobalConstant} from "./Common/global-constant.ts";
+import {useParams} from "react-router-dom";
+import axiosInstance from "../auth/interceptor.ts";
+import {GlobalConstant} from "../Common/global-constant.ts";
 import {useNavigate} from "react-router-dom";
 
-export function WorkspaceCreate() {
+
+export function BoardCreate() {
+    const navigate = useNavigate()
 
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    const [type, setType] = useState('');
-    const navigate = useNavigate()
+    const [visibility, setVisibility] = useState('');
+
+    const {id} = useParams();
 
 
-    async function create() {
-        const workspace = {name, description, type};
-
-        await axiosInstance.post(GlobalConstant.baseurl+'/workspace/create', workspace)
-            .then((response) => {console.log(response.data);navigate("/myboard")})
+    function createBoard(){
+        const board = {name, description, visibility};
+        axiosInstance.post(GlobalConstant.baseurl+"board/create/"+id, board)
+            .then((response) => {
+                console.log(response.data)
+                navigate("/board/showAll/"+id)
+            })
     }
-
 
     return (
         <>
@@ -28,7 +33,7 @@ export function WorkspaceCreate() {
                     </div>
 
                     <div className="mt-5 d-flex flex-column align-items-center">
-                        <div className=""><h1 className="text-light">Create Workspace</h1></div>
+                        <div className=""><h1 className="text-light">Create Board</h1></div>
                     </div>
                     <hr/>
 
@@ -49,20 +54,24 @@ export function WorkspaceCreate() {
                         <div className="d-flex gap-5">
                             <div className="form-check">
                                 <label htmlFor="">Public</label>
-                                <input className="form-check-input" value="1" type="radio" name={"type"} id="" checked onChange={(e) => setType(e.target.value)}/>
+                                <input className="form-check-input" value="1" type="radio" name={"type"} id=""
+                                       onChange={(e) => setVisibility(e.target.value)}/>
                             </div>
                             <div className="form-check">
                                 <label htmlFor="">Private</label>
-                                <input className="form-check-input" value="2" type="radio" name={"type"} id="" onChange={(e) => setType(e.target.value)}/>
+                                <input className="form-check-input" value="2" type="radio" name={"type"} id=""
+                                       onChange={(e) => setVisibility(e.target.value)}/>
                             </div>
                             <div className="form-check">
                                 <label htmlFor="">Team</label>
-                                <input className="form-check-input" value="3" type="radio" name={"type"} id="" onChange={(e) => setType(e.target.value)}/>
+                                <input className="form-check-input" value="3" type="radio" name={"type"} id=""
+                                       onChange={(e) => setVisibility(e.target.value)}/>
                             </div>
                         </div>
 
                         <div className="">
-                            <button className="btn btn-primary" onClick={create}>Create</button>
+                            <button onClick={createBoard} className={"btn btn-success"} type="submit">Create a board
+                            </button>
                         </div>
                     </div>
                 </div>
