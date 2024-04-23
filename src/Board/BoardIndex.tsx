@@ -1,42 +1,44 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import axiosHttp from "../auth/interceptor.ts";
-import {GlobalConstant} from "../Common/global-constant.ts";
-import {useNavigate, useParams} from "react-router-dom";
-import {Board} from "../Interfaces/Board.ts";
+import { GlobalConstant } from "../Common/global-constant.ts";
+import { useNavigate, useParams } from "react-router-dom";
+import { Board } from "../Interfaces/Board.ts";
 
 export function BoardIndex() {
     const [isLoading, setLoading] = useState(true);
-    const [boards , setBoards] = useState();
+    const [boards, setBoards] = useState<Board[] | undefined>(undefined); // Ajout de | undefined pour permettre que boards soit undefined
     const navigate = useNavigate();
-    const {id}= useParams();
+    const { id } = useParams();
 
     useEffect(() => {
-        axiosHttp.get(GlobalConstant.baseurl+"board/showAll/"+id)
-            .then((response)=>{
+        axiosHttp.get(GlobalConstant.baseurl + "board/showAll/" + id)
+            .then((response) => {
                 setBoards(response.data);
-                setLoading(false)
+                setLoading(false);
             })
-    },[]);
+    }, [id]);
 
     function removeBoard(board: Board) {
-        axiosHttp.delete(GlobalConstant.baseurl+"board/delete/"+board.id)
+        axiosHttp.delete(GlobalConstant.baseurl + "board/delete/" + board.id)
             .then(response => {
                 console.log(response)
-                setTimeout(()=>{
-                    navigate("/board/showAll/"+id)
+                setTimeout(() => {
+                    navigate("/board/showAll/" + id)
                     window.location.reload()
-                },500)
+                }, 500)
             })
     }
 
-    if (isLoading) {
-        return <div className="App">
-                    <div className="container">
-                        <div className="d-flex flex-column gap-5">
-                            Loading...
-                        </div>
+    if (isLoading || !boards) { // Ajout de la vérification !boards
+        return (
+            <div className="App">
+                <div className="container">
+                    <div className="d-flex flex-column gap-5">
+                        Loading...
                     </div>
-                </div>;
+                </div>
+            </div>
+        );
     }
 
     return (

@@ -4,10 +4,11 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {List} from "../Interfaces/List.ts";
 import {Card} from "../Interfaces/Card.ts";
+import { Board } from "../Interfaces/Board.ts"; // Import de l'interface Board
 
 export function BoardShow() {
     const [isLoading, setLoading] = useState(true);
-    const [board , setBoard] = useState();
+    const [board, setBoard] = useState<Board>(); // Spécifier le type de board comme Board
     const [cardName, setCardName] = useState("");
     const navigate = useNavigate();
 
@@ -20,7 +21,7 @@ export function BoardShow() {
                 setLoading(false)
             })
 
-    },);
+    }, []);
 
     async function createCard(listId:string){
         await axiosHttp.post(GlobalConstant.baseurl+'card/create/'+listId, {"name":cardName})
@@ -32,22 +33,7 @@ export function BoardShow() {
             })
     }
 
-    /*
-    function removeList(List: List) {
-        axiosHttp.delete(GlobalConstant.baseurl+"list/delete/"+list.id)
-            .then(response => {
-                console.log(response)
-                setTimeout(()=>{
-                    navigate("/board/showAll/"+id)
-                    window.location.reload()
-                },500)
-            })
-    }
-    */
-
-
-
-    if (isLoading) {
+    if (isLoading || !board) { // Ajout de la vérification !board
         return <div className="App"><div className="container">Loading...</div></div>;
     }
 
@@ -88,7 +74,7 @@ export function BoardShow() {
                                         </button>
                                     </div>
                                     {list.cards.map((card: Card) => (
-                                        <div className="">
+                                        <div className="" key={card.id}> {/* Ajouter une clé unique pour chaque élément de la liste */}
                                             <ul>
                                                 <li>
                                                     <a className={"card_projet"}>{card.name}</a>

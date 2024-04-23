@@ -8,7 +8,7 @@ import {useNavigate} from "react-router-dom";
 export function WorkspaceIndex() {
 
     const [isLoading, setLoading] = useState(true);
-    const [workspaces , setWorkspaces] = useState();
+    const [workspaces , setWorkspaces] = useState<Workspace[]>(); // Spécifier le type de workspaces comme un tableau de Workspace
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -20,8 +20,8 @@ export function WorkspaceIndex() {
             })
     }, []);
 
-    function remove(worspace: Workspace) {
-        axiosInstance.delete(`${GlobalConstant.baseurl+`workspace/delete/${worspace.id}`}`)
+    function remove(workspace: Workspace) {
+        axiosInstance.delete(`${GlobalConstant.baseurl+`workspace/delete/${workspace.id}`}`)
             .then(()=>{
                 setTimeout(()=>{
                     window.location.reload()
@@ -29,7 +29,7 @@ export function WorkspaceIndex() {
             })
     }
 
-    if (isLoading) {
+    if (isLoading || !workspaces) { // Ajout de la vérification !workspaces
         return <div className="App container">Loading...</div>;
     }
 
